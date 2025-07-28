@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<!-- ================================================================= -->
+<!-- THE ONE, TRULY UNIVERSAL, AND CONSISTENT NAVBAR FRAGMENT         -->
+<!-- ================================================================= -->
+<div th:fragment="navbar" class="navbar">
+
+    <!-- Logo Section -->
+    <div>
+        <a class="navbar-brand"
+           th:href="@{/}"
+           sec:authorize="!isAuthenticated()"
+           th:text="'Learn Mate'">
+        </a>
+        <a class="navbar-brand"
+           th:href="@{/admin/dashboard}"
+           sec:authorize="hasRole('ADMIN')"
+           th:text="'Admin Panel'">
+        </a>
+        <!-- Add other roles (Teacher, Student) here later -->
+    </div>
+
+    <!-- Links Section -->
+    <div class="navbar-links">
+        <!-- Show "Login" link if user is NOT logged in -->
+        <a th:href="@{/login}" sec:authorize="!isAuthenticated()" class="navbar-action">Login</a>
+
+        <!-- Show "Logout" button if user IS logged in -->
+        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="margin: 0;">
+            <button type="submit" class="navbar-action">Logout</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

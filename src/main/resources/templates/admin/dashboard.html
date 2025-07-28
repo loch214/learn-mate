@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Learn Mate</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="~{admin/fragments :: navbar}"></div>
+
+<div class="container">
+    <h2>Welcome, Administrator!</h2>
+    <p>Select a management option below to get started.</p>
+    <div class="nav-grid">
+        <a th:href="@{/admin/applications}" class="nav-card">
+            <h3>Manage Applications</h3>
+            <p>Approve or reject new student and teacher signups.</p>
+        </a>
+        <a th:href="@{/admin/students}" class="nav-card">
+            <h3>Student Management</h3>
+            <p>View, add, edit, or remove student profiles.</p>
+        </a>
+        <!-- THIS IS THE CORRECTED, WORKING LINK -->
+        <a th:href="@{/admin/teachers}" class="nav-card">
+            <h3>Teacher Management</h3>
+            <p>View, add, edit, or remove teacher profiles.</p>
+        </a>
+    </div>
+</div>
+</body>
+</html>

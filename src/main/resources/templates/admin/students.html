@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Students - Admin</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<div th:replace="~{admin/fragments :: navbar}"></div>
+
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h1>Students</h1>
+        <!-- The "Add Student" button has been removed -->
+    </div>
+
+    <div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr><th>Full Name</th><th>Username</th><th>Email</th><th>Grade</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="student : ${students}">
+                <td th:text="${student.fullName}"></td>
+                <td th:text="${student.username}"></td>
+                <td th:text="${student.email}"></td>
+                <td th:text="${student.details}"></td>
+                <td>
+                    <button class="btn btn-primary" style="width:auto; padding: 0.5rem 1rem; opacity:0.5;">Edit</button>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(students)}">
+                <td colspan="5" style="text-align: center;">No students found.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
