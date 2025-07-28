@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Materials - Learn Mate</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<!-- Include the universal navbar -->
+<div th:replace="admin/fragments :: navbar"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Course Materials for <span th:text="${subject.name}">Subject Name</span></h1>
+        <div class="header-actions">
+            <a th:href="@{/teacher/subjects/{id}(id=${subject.id})}" class="btn-secondary">Back to Subject</a>
+            <a th:href="@{/teacher/subjects/{id}/materials/add(id=${subject.id})}" class="btn-primary">Add New Material</a>
+        </div>
+    </div>
+    
+    <div class="alert alert-success" th:if="${success != null}">
+        <p th:text="${success}">Success message</p>
+    </div>
+    
+    <div class="materials-list" th:if="${!materials.isEmpty()}">
+        <div class="filter-controls">
+            <div class="filter-group">
+                <label for="materialType">Filter by Type:</label>
+                <select id="materialType" onchange="filterMaterials()">
+                    <option value="all">All Types</option>
+                    <option value="FILE">Files</option>
+                    <option value="LINK">Links</option>
+                    <option value="TEXT">Text</option>
+                </select>
+            </div>
+            <div class="search-group">
+                <input type="text" id="searchInput" placeholder="Search materials..." onkeyup="filterMaterials()">
+            </div>
+        </div>
+        
+        <div class="materials-grid">
+            <div class="material-card" th:each="material : ${materials}" th:data-type="${material.type}">
+                <div class="material-header">
+                    <h3 th:text="${material.title}">Material Title</h3>
+                    <span class="material-type" th:text="${material.type}">Type</span>
+                </div>
+                
+                <div class="material-body">
+                    <p th:text="${material.description}">Material Description</p>
+                    
+                    <!-- Display content based on type -->
+                    <div th:if="${material.type == 'FILE'}" class="material-file">
+                        <a th:href="${material.fileUrl}" target="_blank" class="btn-secondary">Download File</a>
+                    </div>
+                    
+                    <div th:if="${material.type == 'LINK'}" class="material-link">
+                        <a th:href="${material.linkUrl}" target="_blank" class="btn-secondary">Open Link</a>
+                    </div>
+                    
+                    <div th:if="${material.type == 'TEXT'}" class="material-text">
+                        <div class="text-preview" th:text="${#strings.abbreviate(material.content, 150)}">
+                            Text content preview...
+                        </div>
+                        <button class="btn-secondary" onclick="showFullText(this)">Show More</button>
+                        <div class="full-text" style="display: none;" th:text="${material.content}">
+                            Full text content...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="material-footer">
+                    <span class="material-date" th:text="'Created: ' + ${#temporals.format(material.createdAt, 'MMM dd, yyyy')}">Created: Jul 28, 2025</span>
+                    <div class="material-actions">
+                        <a th:href="@{/teacher/materials/{id}/edit(id=${material.id})}" class="btn-action">Edit</a>
+                        <form th:action="@{/teacher/materials/{id}/delete(id=${material.id})}" method="post" style="display: inline;">
+                            <button type="submit" class="btn-action btn-danger" onclick="return confirm('Are you sure you want to delete this material?')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="no-materials" th:if="${materials.isEmpty()}">
+        <div class="alert alert-info">
+            <p>No course materials have been added for this subject yet.</p>
+            <a th:href="@{/teacher/subjects/{id}/materials/add(id=${subject.id})}" class="btn-primary">Add Your First Material</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterMaterials() {
+        const typeFilter = document.getElementById('materialType').value;
+        const searchText = document.getElementById('searchInput').value.toLowerCase();
+        const materials = document.querySelectorAll('.material-card');
+        
+        materials.forEach(material => {
+            const type = material.getAttribute('data-type');
+            const title = material.querySelector('h3').textContent.toLowerCase();
+            const description = material.querySelector('.material-body p').textContent.toLowerCase();
+            
+            const matchesType = typeFilter === 'all' || type === typeFilter;
+            const matchesSearch = title.includes(searchText) || description.includes(searchText);
+            
+            material.style.display = (matchesType && matchesSearch) ? 'block' : 'none';
+        });
+    }
+    
+    function showFullText(button) {
+        const card = button.closest('.material-card');
+        const preview = card.querySelector('.text-preview');
+        const fullText = card.querySelector('.full-text');
+        
+        if (fullText.style.display === 'none') {
+            preview.style.display = 'none';
+            fullText.style.display = 'block';
+            button.textContent = 'Show Less';
+        } else {
+            preview.style.display = 'block';
+            fullText.style.display = 'none';
+            button.textContent = 'Show More';
+        }
+    }
+</script>
+</body>
+</html>

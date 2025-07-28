@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Course Material - Learn Mate</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<!-- Include the universal navbar -->
+<div th:replace="admin/fragments :: navbar"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Edit Course Material</h1>
+        <a th:href="@{/teacher/subjects/{id}/materials(id=${material.subject.id})}" class="btn-secondary">Back to Materials</a>
+    </div>
+    
+    <div class="form-container">
+        <form th:action="@{/teacher/materials/{id}(id=${material.id})}" method="post" class="standard-form">
+            <div class="form-group">
+                <label for="title">Title <span class="required">*</span></label>
+                <input type="text" id="title" name="title" th:value="${material.title}" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description <span class="required">*</span></label>
+                <textarea id="description" name="description" rows="3" required th:text="${material.description}"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="type">Material Type <span class="required">*</span></label>
+                <select id="type" name="type" required onchange="toggleFields()" th:value="${material.type}">
+                    <option value="FILE" th:selected="${material.type == 'FILE'}">File (URL)</option>
+                    <option value="LINK" th:selected="${material.type == 'LINK'}">External Link</option>
+                    <option value="TEXT" th:selected="${material.type == 'TEXT'}">Text Content</option>
+                </select>
+            </div>
+            
+            <!-- File URL field (shown when type is FILE) -->
+            <div id="fileUrlField" class="form-group" th:style="${material.type == 'FILE'} ? 'display: block;' : 'display: none;'">
+                <label for="fileUrl">File URL <span class="required">*</span></label>
+                <input type="url" id="fileUrl" name="fileUrl" placeholder="https://example.com/file.pdf" th:value="${material.fileUrl}">
+                <small class="form-help">Enter the URL where the file is hosted. For Google Drive, use a shareable link.</small>
+            </div>
+            
+            <!-- Link URL field (shown when type is LINK) -->
+            <div id="linkUrlField" class="form-group" th:style="${material.type == 'LINK'} ? 'display: block;' : 'display: none;'">
+                <label for="linkUrl">External Link <span class="required">*</span></label>
+                <input type="url" id="linkUrl" name="linkUrl" placeholder="https://example.com" th:value="${material.linkUrl}">
+                <small class="form-help">Enter the full URL including https://</small>
+            </div>
+            
+            <!-- Content field (shown when type is TEXT) -->
+            <div id="contentField" class="form-group" th:style="${material.type == 'TEXT'} ? 'display: block;' : 'display: none;'">
+                <label for="content">Text Content <span class="required">*</span></label>
+                <textarea id="content" name="content" rows="10" th:text="${material.content}"></textarea>
+                <small class="form-help">Enter the text content for this material.</small>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Update Material</button>
+                <a th:href="@{/teacher/subjects/{id}/materials(id=${material.subject.id})}" class="btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleFields() {
+        const type = document.getElementById('type').value;
+        
+        // Hide all fields first
+        document.getElementById('fileUrlField').style.display = 'none';
+        document.getElementById('linkUrlField').style.display = 'none';
+        document.getElementById('contentField').style.display = 'none';
+        
+        // Show the appropriate field based on the selected type
+        if (type === 'FILE') {
+            document.getElementById('fileUrlField').style.display = 'block';
+            document.getElementById('fileUrl').required = true;
+            document.getElementById('linkUrl').required = false;
+            document.getElementById('content').required = false;
+        } else if (type === 'LINK') {
+            document.getElementById('linkUrlField').style.display = 'block';
+            document.getElementById('fileUrl').required = false;
+            document.getElementById('linkUrl').required = true;
+            document.getElementById('content').required = false;
+        } else if (type === 'TEXT') {
+            document.getElementById('contentField').style.display = 'block';
+            document.getElementById('fileUrl').required = false;
+            document.getElementById('linkUrl').required = false;
+            document.getElementById('content').required = true;
+        }
+    }
+    
+    // Initialize the form based on the current material type
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set required attributes based on the current type
+        const currentType = document.getElementById('type').value;
+        if (currentType === 'FILE') {
+            document.getElementById('fileUrl').required = true;
+        } else if (currentType === 'LINK') {
+            document.getElementById('linkUrl').required = true;
+        } else if (currentType === 'TEXT') {
+            document.getElementById('content').required = true;
+        }
+    });
+</script>
+</body>
+</html>

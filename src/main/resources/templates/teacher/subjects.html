@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>My Subjects - Learn Mate</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<!-- Include the universal navbar -->
+<div th:replace="admin/fragments :: navbar"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>My Subjects</h1>
+        <a th:href="@{/teacher/dashboard}" class="btn-secondary">Back to Dashboard</a>
+    </div>
+    
+    <div class="subjects-list" th:if="${!subjects.isEmpty()}">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Subject Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="subject : ${subjects}">
+                    <td th:text="${subject.name}">Subject Name</td>
+                    <td th:text="${subject.description}">Subject Description</td>
+                    <td class="actions">
+                        <a th:href="@{/teacher/subjects/{id}(id=${subject.id})}" class="btn-action">Details</a>
+                        <a th:href="@{/teacher/subjects/{id}/students(id=${subject.id})}" class="btn-action">Students</a>
+                        <a th:href="@{/teacher/subjects/{id}/materials(id=${subject.id})}" class="btn-action">Materials</a>
+                        <a th:href="@{/teacher/subjects/{id}/attendance(id=${subject.id})}" class="btn-action">Attendance</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="no-subjects" th:if="${subjects.isEmpty()}">
+        <div class="alert alert-info">
+            <p>You don't have any subjects assigned yet. Please contact the administrator.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

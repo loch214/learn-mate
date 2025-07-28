@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Course Material - Learn Mate</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<!-- Include the universal navbar -->
+<div th:replace="admin/fragments :: navbar"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Add New Course Material for <span th:text="${subject.name}">Subject Name</span></h1>
+        <a th:href="@{/teacher/subjects/{id}/materials(id=${subject.id})}" class="btn-secondary">Back to Materials</a>
+    </div>
+    
+    <div class="form-container">
+        <form th:action="@{/teacher/subjects/{id}/materials(id=${subject.id})}" method="post" class="standard-form">
+            <div class="form-group">
+                <label for="title">Title <span class="required">*</span></label>
+                <input type="text" id="title" name="title" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description <span class="required">*</span></label>
+                <textarea id="description" name="description" rows="3" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="type">Material Type <span class="required">*</span></label>
+                <select id="type" name="type" required onchange="toggleFields()">
+                    <option value="">-- Select Type --</option>
+                    <option value="FILE">File (URL)</option>
+                    <option value="LINK">External Link</option>
+                    <option value="TEXT">Text Content</option>
+                </select>
+            </div>
+            
+            <!-- File URL field (shown when type is FILE) -->
+            <div id="fileUrlField" class="form-group" style="display: none;">
+                <label for="fileUrl">File URL <span class="required">*</span></label>
+                <input type="url" id="fileUrl" name="fileUrl" placeholder="https://example.com/file.pdf">
+                <small class="form-help">Enter the URL where the file is hosted. For Google Drive, use a shareable link.</small>
+            </div>
+            
+            <!-- Link URL field (shown when type is LINK) -->
+            <div id="linkUrlField" class="form-group" style="display: none;">
+                <label for="linkUrl">External Link <span class="required">*</span></label>
+                <input type="url" id="linkUrl" name="linkUrl" placeholder="https://example.com">
+                <small class="form-help">Enter the full URL including https://</small>
+            </div>
+            
+            <!-- Content field (shown when type is TEXT) -->
+            <div id="contentField" class="form-group" style="display: none;">
+                <label for="content">Text Content <span class="required">*</span></label>
+                <textarea id="content" name="content" rows="10"></textarea>
+                <small class="form-help">Enter the text content for this material.</small>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Add Material</button>
+                <a th:href="@{/teacher/subjects/{id}/materials(id=${subject.id})}" class="btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleFields() {
+        const type = document.getElementById('type').value;
+        
+        // Hide all fields first
+        document.getElementById('fileUrlField').style.display = 'none';
+        document.getElementById('linkUrlField').style.display = 'none';
+        document.getElementById('contentField').style.display = 'none';
+        
+        // Clear all field values
+        document.getElementById('fileUrl').value = '';
+        document.getElementById('linkUrl').value = '';
+        document.getElementById('content').value = '';
+        
+        // Show the appropriate field based on the selected type
+        if (type === 'FILE') {
+            document.getElementById('fileUrlField').style.display = 'block';
+            document.getElementById('fileUrl').required = true;
+        } else if (type === 'LINK') {
+            document.getElementById('linkUrlField').style.display = 'block';
+            document.getElementById('linkUrl').required = true;
+        } else if (type === 'TEXT') {
+            document.getElementById('contentField').style.display = 'block';
+            document.getElementById('content').required = true;
+        }
+    }
+</script>
+</body>
+</html>

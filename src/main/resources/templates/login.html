@@ -1,1 +1,114 @@
-<!DOCTYPE html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>Login - Learn Mate</title><link rel="stylesheet" th:href="@{/css/main.css}"></head><body><div th:replace="~{admin/fragments :: navbar}"></div><div style="display: flex; justify-content: center; align-items: center; padding-top: 5rem;"><div class="form-container"><h2>Login to Learn-Mate</h2><form th:action="@{/login}" method="post"><div class="form-group"><label for="username">Username or Email:</label><input type="text" id="username" name="username" required autofocus></div><div class="form-group"><label for="password">Password:</label><input type="password" id="password" name="password" required></div><div th:if="${param.error}" class="message error" style="text-align: left;">Invalid username or password.</div><button type="submit" class="btn btn-primary">Log In</button></form><div class="link">New to Learn-Mate? <a th:href="@{/signup}">Create an account</a></div></div></div></body></html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Learn Mate</title>
+    <!-- Include common head elements -->
+    <th:block th:replace="admin/fragments :: common-head"></th:block>
+</head>
+<body class="bg-light">
+    <!-- Include the universal navbar -->
+    <div th:replace="admin/fragments :: navbar"></div>
+
+    <div class="login-page fade-in">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-5">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5 slide-in-up">
+                        <div class="card-header bg-primary text-white text-center py-4">
+                            <h2 class="mb-0">
+                                <i class="fas fa-sign-in-alt me-2"></i> Login to Learn Mate
+                            </h2>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Error Message -->
+                            <div th:if="${param.error}" class="alert alert-danger mb-4">
+                                <i class="fas fa-exclamation-circle me-2"></i> Invalid username or password.
+                            </div>
+                            
+                            <!-- Success Message for Logout -->
+                            <div th:if="${param.logout}" class="alert alert-success mb-4">
+                                <i class="fas fa-check-circle me-2"></i> You have been logged out successfully.
+                            </div>
+                            
+                            <form th:action="@{/login}" method="post">
+                                <div class="form-group mb-3">
+                                    <label for="username" class="form-label">Username or Email</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        <input type="text" id="username" name="username" class="form-control" 
+                                               placeholder="Enter your username or email" required autofocus>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-4">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input type="password" id="password" name="password" class="form-control" 
+                                               placeholder="Enter your password" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                    <button type="submit" class="btn btn-primary btn-block w-100">
+                                        <i class="fas fa-sign-in-alt me-2"></i> Login
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer text-center py-3">
+                            <div class="small">
+                                New to Learn Mate? 
+                                <a th:href="@{/signup}" class="text-primary">
+                                    <i class="fas fa-user-plus me-1"></i> Create an account
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include navbar script -->
+    <th:block th:replace="admin/fragments :: navbar-script"></th:block>
+
+    <style>
+        /* Additional styles specific to the login page */
+        .login-page {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            padding: var(--space-xl) 0;
+        }
+        
+        .input-group-text {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-color: var(--gray-300);
+        }
+        
+        .me-1 {
+            margin-right: 0.25rem;
+        }
+        
+        .me-2 {
+            margin-right: 0.5rem;
+        }
+        
+        .card-header {
+            border-bottom: none;
+        }
+        
+        .card-footer {
+            background-color: var(--gray-50);
+            border-top: none;
+        }
+    </style>
+</body>
+</html>

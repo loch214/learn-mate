@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Subject Students - Learn Mate</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<!-- Include the universal navbar -->
+<div th:replace="admin/fragments :: navbar"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Students in <span th:text="${subject.name}">Subject Name</span></h1>
+        <div class="header-actions">
+            <a th:href="@{/teacher/subjects/{id}(id=${subject.id})}" class="btn-secondary">Back to Subject</a>
+            <a th:href="@{/teacher/subjects/{id}/attendance(id=${subject.id})}" class="btn-primary">Mark Attendance</a>
+        </div>
+    </div>
+    
+    <div class="students-list" th:if="${!studentsWithAttendance.isEmpty()}">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Attendance %</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="entry : ${studentsWithAttendance}">
+                    <td th:text="${entry.key.fullName}">Student Name</td>
+                    <td th:text="${entry.key.username}">Username</td>
+                    <td th:text="${entry.key.email}">Email</td>
+                    <td>
+                        <div class="attendance-percentage">
+                            <div class="progress-bar">
+                                <div class="progress" th:style="'width: ' + ${entry.value} + '%'"></div>
+                            </div>
+                            <span th:text="${#numbers.formatDecimal(entry.value, 1, 1)} + '%'">0.0%</span>
+                        </div>
+                    </td>
+                    <td class="actions">
+                        <!-- Find the enrollment ID for this student -->
+                        <a th:href="@{/teacher/subjects/{subjectId}/attendance(subjectId=${subject.id})}" class="btn-action">Mark Attendance</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="no-students" th:if="${studentsWithAttendance.isEmpty()}">
+        <div class="alert alert-info">
+            <p>No students are enrolled in this subject yet.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

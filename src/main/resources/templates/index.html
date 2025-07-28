@@ -1,1 +1,280 @@
-<!DOCTYPE html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>Learn Mate - Home</title><link rel="stylesheet" th:href="@{/css/main.css}"></head><body><div th:replace="~{admin/fragments :: navbar}"></div><div class="container" style="text-align: center;"><div th:if="${successMessage}" class="message success" th:text="${successMessage}"></div><h1>Welcome to Learn Mate</h1><p>Your one-stop solution for managing your educational institute.</p></div></body></html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Learn Mate - Educational Institute Management System</title>
+    <!-- Include common head elements -->
+    <th:block th:replace="admin/fragments :: common-head"></th:block>
+</head>
+<body>
+    <!-- Include the universal navbar -->
+    <div th:replace="admin/fragments :: navbar"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 fade-in">
+                    <h1 class="hero-title">Welcome to <span class="text-primary">Learn Mate</span></h1>
+                    <p class="hero-subtitle">The modern solution for educational institutes to manage classes, students, and resources efficiently.</p>
+                    
+                    <!-- Success Message -->
+                    <div th:if="${successMessage}" class="alert alert-success mb-4 slide-in-up" th:text="${successMessage}"></div>
+                    
+                    <div class="hero-actions">
+                        <a th:href="@{/signup}" class="btn btn-lg btn-primary">
+                            <i class="fas fa-user-plus"></i> Get Started
+                        </a>
+                        <a th:href="@{/login}" class="btn btn-lg btn-outline-primary">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <div class="hero-image slide-in-up">
+                        <i class="fas fa-graduation-cap hero-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Why Choose Learn Mate?</h2>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>Teacher Management</h3>
+                        <p>Easily manage teacher profiles, subject assignments, and performance tracking.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>Student Management</h3>
+                        <p>Track student enrollment, attendance, and academic progress in one place.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3>Course Management</h3>
+                        <p>Create and manage courses, materials, and resources with ease.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h3>Attendance Tracking</h3>
+                        <p>Automated attendance tracking and reporting for better management.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Resource Library</h3>
+                        <p>Centralized repository for all educational materials and resources.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Performance Analytics</h3>
+                        <p>Insightful analytics and reports to track institutional performance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container text-center">
+            <h2 class="cta-title">Ready to transform your educational institute?</h2>
+            <p class="cta-subtitle">Join thousands of educational institutes already using Learn Mate.</p>
+            <div class="cta-actions">
+                <a th:href="@{/signup}" class="btn btn-lg btn-primary">
+                    <i class="fas fa-rocket"></i> Get Started Today
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="footer-title">Learn Mate</h3>
+                    <p>The modern solution for educational institutes.</p>
+                </div>
+                <div class="col-md-6 text-md-right">
+                    <p>&copy; 2025 Learn Mate. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Include navbar script -->
+    <th:block th:replace="admin/fragments :: navbar-script"></th:block>
+
+    <style>
+        /* Additional styles specific to the home page */
+        .hero-section {
+            padding: var(--space-xxl) 0;
+            background-color: var(--white);
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: var(--space-md);
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray-700);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: var(--space-md);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .hero-icon {
+            font-size: 15rem;
+            color: var(--primary-light);
+        }
+        
+        .features-section {
+            padding: var(--space-xxl) 0;
+            background-color: var(--gray-50);
+        }
+        
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+        
+        .feature-card {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--space-xl);
+            height: 100%;
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: var(--space-md);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-sm);
+            color: var(--gray-900);
+        }
+        
+        .feature-card p {
+            color: var(--gray-700);
+            margin: 0;
+        }
+        
+        .cta-section {
+            padding: var(--space-xxl) 0;
+            background-color: var(--primary-light);
+        }
+        
+        .cta-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-sm);
+        }
+        
+        .cta-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray-700);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .cta-actions {
+            margin-top: var(--space-lg);
+        }
+        
+        .footer {
+            padding: var(--space-xl) 0;
+            background-color: var(--gray-900);
+            color: var(--white);
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--space-sm);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.25rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+            }
+            
+            .section-title,
+            .cta-title {
+                font-size: 1.75rem;
+            }
+            
+            .cta-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</body>
+</html>

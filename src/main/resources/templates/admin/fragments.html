@@ -1,39 +1,120 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <!-- Common head elements that can be included in all pages -->
+    <th:block th:fragment="common-head">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    </th:block>
+</head>
 <body>
 
 <!-- ================================================================= -->
 <!-- THE ONE, TRULY UNIVERSAL, AND CONSISTENT NAVBAR FRAGMENT         -->
 <!-- ================================================================= -->
 <div th:fragment="navbar" class="navbar">
-
     <!-- Logo Section -->
-    <div>
+    <div class="navbar-brand-container">
         <a class="navbar-brand"
            th:href="@{/}"
-           sec:authorize="!isAuthenticated()"
-           th:text="'Learn Mate'">
+           sec:authorize="!isAuthenticated()">
+           <i class="fas fa-graduation-cap"></i> Learn Mate
         </a>
         <a class="navbar-brand"
            th:href="@{/admin/dashboard}"
-           sec:authorize="hasRole('ADMIN')"
-           th:text="'Admin Panel'">
+           sec:authorize="hasRole('ADMIN')">
+           <i class="fas fa-user-shield"></i> Admin Panel
         </a>
-        <!-- Add other roles (Teacher, Student) here later -->
+        <a class="navbar-brand"
+           th:href="@{/teacher/dashboard}"
+           sec:authorize="hasRole('TEACHER')">
+           <i class="fas fa-chalkboard-teacher"></i> Teacher Dashboard
+        </a>
+        <a class="navbar-brand"
+           th:href="@{/student/dashboard}"
+           sec:authorize="hasRole('STUDENT')">
+           <i class="fas fa-user-graduate"></i> Student Dashboard
+        </a>
+        
+        <!-- Mobile Toggle Button -->
+        <button class="navbar-toggle" id="navbarToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
     </div>
 
-    <!-- Links Section -->
-    <div class="navbar-links">
-        <!-- Show "Login" link if user is NOT logged in -->
-        <a th:href="@{/login}" sec:authorize="!isAuthenticated()" class="navbar-action">Login</a>
+    <!-- Navigation Links -->
+    <div class="navbar-links" id="navbarLinks">
+        <!-- Admin Navigation Links -->
+        <div sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin/dashboard}" class="navbar-action" th:classappend="${#httpServletRequest.getRequestURI() == '/admin/dashboard' ? 'active' : ''}">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a th:href="@{/admin/applications}" class="navbar-action" th:classappend="${#httpServletRequest.getRequestURI() == '/admin/applications' ? 'active' : ''}">
+                <i class="fas fa-clipboard-list"></i> Applications
+            </a>
+            <a th:href="@{/admin/students}" class="navbar-action" th:classappend="${#httpServletRequest.getRequestURI() == '/admin/students' ? 'active' : ''}">
+                <i class="fas fa-user-graduate"></i> Students
+            </a>
+            <a th:href="@{/admin/teachers}" class="navbar-action" th:classappend="${#httpServletRequest.getRequestURI() == '/admin/teachers' ? 'active' : ''}">
+                <i class="fas fa-chalkboard-teacher"></i> Teachers
+            </a>
+        </div>
+        
+        <!-- Teacher Navigation Links -->
+        <div sec:authorize="hasRole('TEACHER')">
+            <a th:href="@{/teacher/dashboard}" class="navbar-action" th:classappend="${#httpServletRequest.getRequestURI() == '/teacher/dashboard' ? 'active' : ''}">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a th:href="@{/teacher/subjects}" class="navbar-action" th:classappend="${#httpServletRequest.getRequestURI() == '/teacher/subjects' ? 'active' : ''}">
+                <i class="fas fa-book"></i> Subjects
+            </a>
+        </div>
+        
+        <!-- Student Navigation Links -->
+        <div sec:authorize="hasRole('STUDENT')">
+            <a th:href="@{/student/dashboard}" class="navbar-action" th:classappend="${#httpServletRequest.getRequestURI() == '/student/dashboard' ? 'active' : ''}">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+        </div>
+        
+        <!-- Authentication Links -->
+        <div class="auth-links">
+            <!-- Show "Login" link if user is NOT logged in -->
+            <a th:href="@{/login}" sec:authorize="!isAuthenticated()" class="navbar-action btn-primary">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </a>
+            
+            <!-- Show "Signup" link if user is NOT logged in -->
+            <a th:href="@{/signup}" sec:authorize="!isAuthenticated()" class="navbar-action">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </a>
 
-        <!-- Show "Logout" button if user IS logged in -->
-        <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="margin: 0;">
-            <button type="submit" class="navbar-action">Logout</button>
-        </form>
+            <!-- Show "Logout" button if user IS logged in -->
+            <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="margin: 0;">
+                <button type="submit" class="navbar-action">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
     </div>
-
 </div>
+
+<!-- JavaScript for navbar toggle -->
+<script th:fragment="navbar-script">
+    document.addEventListener('DOMContentLoaded', function() {
+        const navbarToggle = document.getElementById('navbarToggle');
+        const navbarLinks = document.getElementById('navbarLinks');
+        
+        if (navbarToggle) {
+            navbarToggle.addEventListener('click', function() {
+                navbarLinks.classList.toggle('active');
+            });
+        }
+    });
+</script>
 
 </body>
 </html>

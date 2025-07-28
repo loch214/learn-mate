@@ -1,2 +1,245 @@
-<!DOCTYPE html><html lang="en" xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><title>Apply - Learn Mate</title><link rel="stylesheet" th:href="@{/css/main.css}"></head><body><div th:replace="~{admin/fragments :: navbar}"></div><div style="display: flex; justify-content: center; align-items: center; padding: 2rem 0;"><div class="form-container"><h2>Create Your Account</h2><div th:if="${errorMessage}" class="message error" th:text="${errorMessage}"></div><form th:action="@{/signup}" method="post"><div class="form-group"><label for="fullName">Full Name:</label><input type="text" id="fullName" name="fullName" required></div><div class="form-group"><label for="username">Username:</label><input type="text" id="username" name="username" required></div><div class="form-group"><label for="email">Email:</label><input type="email" id="email" name="email" required></div><div class="form-group"><label for="password">Password:</label><input type="password" id="password" name="password" required></div><div class="form-group"><label for="confirmPassword">Confirm Password:</label><input type="password" id="confirmPassword" name="confirmPassword" required></div><div class="form-group"><label for="role">Apply as a:</label><select id="role" name="role" onchange="toggleDetails()"><option value="STUDENT" selected>Student</option><option value="TEACHER">Teacher</option></select></div><div id="studentDetails" class="form-group"><label for="grade">Grade:</label><input type="text" id="grade" name="details"></div><div id="teacherDetails" class="form-group" style="display: none;"><label for="subject">Subject to Teach:</label><input type="text" id="subject" name="details"></div><button type="submit" class="btn btn-success">Apply</button></form><div class="link">Already have an account? <a th:href="@{/login}">Log in</a></div></div></div><script>function toggleDetails(){var role=document.getElementById('role').value;var studentDetails=document.getElementById('studentDetails');var teacherDetails=document.getElementById('teacherDetails');if(role==='STUDENT'){studentDetails.style.display='block';teacherDetails.style.display='none';document.getElementById('subject').disabled=true;document.getElementById('grade').disabled=false;}else{studentDetails.style.display='none';teacherDetails.style.display='block';document.getElementById('grade').disabled=true;document.getElementById('subject').disabled=false;}}
-document.addEventListener('DOMContentLoaded',function(){toggleDetails();});</script></body></html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up - Learn Mate</title>
+    <!-- Include common head elements -->
+    <th:block th:replace="admin/fragments :: common-head"></th:block>
+</head>
+<body class="bg-light">
+    <!-- Include the universal navbar -->
+    <div th:replace="admin/fragments :: navbar"></div>
+
+    <div class="signup-page fade-in">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-7">
+                    <div class="card shadow-lg border-0 rounded-lg mt-5 mb-5 slide-in-up">
+                        <div class="card-header bg-primary text-white text-center py-4">
+                            <h2 class="mb-0">
+                                <i class="fas fa-user-plus me-2"></i> Apply to Learn Mate
+                            </h2>
+                            <p class="mt-2 mb-0">Fill out the form below to submit your application</p>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Error Message -->
+                            <div th:if="${error}" class="alert alert-danger mb-4">
+                                <i class="fas fa-exclamation-circle me-2"></i> <span th:text="${error}">Error message</span>
+                            </div>
+                            
+                            <form th:action="@{/signup}" method="post">
+                                <!-- Role Selection -->
+                                <div class="form-group mb-4">
+                                    <label class="form-label">I am applying as a:</label>
+                                    <div class="d-flex gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="role" id="roleStudent" value="ROLE_STUDENT" checked onchange="toggleDetails()">
+                                            <label class="form-check-label" for="roleStudent">
+                                                <i class="fas fa-user-graduate me-1"></i> Student
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="role" id="roleTeacher" value="ROLE_TEACHER" onchange="toggleDetails()">
+                                            <label class="form-check-label" for="roleTeacher">
+                                                <i class="fas fa-chalkboard-teacher me-1"></i> Teacher
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Personal Information -->
+                                <h5 class="mb-3 border-bottom pb-2">
+                                    <i class="fas fa-user me-2"></i> Personal Information
+                                </h5>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="fullName" class="form-label">Full Name</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-user"></i>
+                                        </span>
+                                        <input type="text" id="fullName" name="fullName" class="form-control" 
+                                               placeholder="Enter your full name" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-at"></i>
+                                        </span>
+                                        <input type="text" id="username" name="username" class="form-control" 
+                                               placeholder="Choose a username" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-envelope"></i>
+                                        </span>
+                                        <input type="email" id="email" name="email" class="form-control" 
+                                               placeholder="Enter your email address" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group mb-4">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-lock"></i>
+                                        </span>
+                                        <input type="password" id="password" name="password" class="form-control" 
+                                               placeholder="Create a password" required>
+                                    </div>
+                                    <small class="form-text text-muted">Password must be at least 8 characters long</small>
+                                </div>
+                                
+                                <!-- Dynamic Details Section -->
+                                <h5 class="mb-3 border-bottom pb-2">
+                                    <i class="fas fa-info-circle me-2"></i> Additional Information
+                                </h5>
+                                
+                                <!-- Student Details (shown when Student role is selected) -->
+                                <div id="studentDetails" class="form-group mb-4">
+                                    <label for="studentGrade" class="form-label">Grade/Year Level</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </span>
+                                        <select id="studentGrade" name="details" class="form-select">
+                                            <option value="">Select your grade</option>
+                                            <option value="Grade 1">Grade 1</option>
+                                            <option value="Grade 2">Grade 2</option>
+                                            <option value="Grade 3">Grade 3</option>
+                                            <option value="Grade 4">Grade 4</option>
+                                            <option value="Grade 5">Grade 5</option>
+                                            <option value="Grade 6">Grade 6</option>
+                                            <option value="Grade 7">Grade 7</option>
+                                            <option value="Grade 8">Grade 8</option>
+                                            <option value="Grade 9">Grade 9</option>
+                                            <option value="Grade 10">Grade 10</option>
+                                            <option value="Grade 11">Grade 11</option>
+                                            <option value="Grade 12">Grade 12</option>
+                                            <option value="University Year 1">University Year 1</option>
+                                            <option value="University Year 2">University Year 2</option>
+                                            <option value="University Year 3">University Year 3</option>
+                                            <option value="University Year 4">University Year 4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <!-- Teacher Details (shown when Teacher role is selected) -->
+                                <div id="teacherDetails" class="form-group mb-4" style="display: none;">
+                                    <label for="teacherSubject" class="form-label">Subject Specialization</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="fas fa-book"></i>
+                                        </span>
+                                        <select id="teacherSubject" name="details" class="form-select">
+                                            <option value="">Select your subject</option>
+                                            <option value="Mathematics">Mathematics</option>
+                                            <option value="Science">Science</option>
+                                            <option value="English">English</option>
+                                            <option value="History">History</option>
+                                            <option value="Geography">Geography</option>
+                                            <option value="Physics">Physics</option>
+                                            <option value="Chemistry">Chemistry</option>
+                                            <option value="Biology">Biology</option>
+                                            <option value="Computer Science">Computer Science</option>
+                                            <option value="Art">Art</option>
+                                            <option value="Music">Music</option>
+                                            <option value="Physical Education">Physical Education</option>
+                                            <option value="Foreign Languages">Foreign Languages</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                    <button type="submit" class="btn btn-primary btn-block w-100">
+                                        <i class="fas fa-paper-plane me-2"></i> Submit Application
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer text-center py-3">
+                            <div class="small">
+                                Already have an account? 
+                                <a th:href="@{/login}" class="text-primary">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Login here
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include navbar script -->
+    <th:block th:replace="admin/fragments :: navbar-script"></th:block>
+
+    <style>
+        /* Additional styles specific to the signup page */
+        .signup-page {
+            min-height: calc(100vh - 70px);
+            padding: var(--space-xl) 0;
+        }
+        
+        .input-group-text {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-color: var(--gray-300);
+        }
+        
+        .me-1 {
+            margin-right: 0.25rem;
+        }
+        
+        .me-2 {
+            margin-right: 0.5rem;
+        }
+        
+        .gap-3 {
+            gap: 1rem;
+        }
+        
+        .card-header {
+            border-bottom: none;
+        }
+        
+        .card-footer {
+            background-color: var(--gray-50);
+            border-top: none;
+        }
+    </style>
+
+    <script>
+        // Function to toggle between student and teacher details
+        function toggleDetails() {
+            const studentDetails = document.getElementById('studentDetails');
+            const teacherDetails = document.getElementById('teacherDetails');
+            const roleStudent = document.getElementById('roleStudent');
+            
+            if (roleStudent.checked) {
+                studentDetails.style.display = 'block';
+                teacherDetails.style.display = 'none';
+                document.getElementById('studentGrade').setAttribute('name', 'details');
+                document.getElementById('teacherSubject').removeAttribute('name');
+            } else {
+                studentDetails.style.display = 'none';
+                teacherDetails.style.display = 'block';
+                document.getElementById('teacherSubject').setAttribute('name', 'details');
+                document.getElementById('studentGrade').removeAttribute('name');
+            }
+        }
+        
+        // Initialize the form on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleDetails();
+        });
+    </script>
+</body>
+</html>

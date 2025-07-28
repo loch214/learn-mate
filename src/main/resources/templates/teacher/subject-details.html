@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Subject Details - Learn Mate</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<!-- Include the universal navbar -->
+<div th:replace="admin/fragments :: navbar"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1 th:text="${subject.name}">Subject Name</h1>
+        <a th:href="@{/teacher/subjects}" class="btn-secondary">Back to Subjects</a>
+    </div>
+    
+    <div class="subject-details">
+        <div class="detail-card">
+            <h2>Subject Information</h2>
+            <div class="detail-item">
+                <span class="label">Name:</span>
+                <span class="value" th:text="${subject.name}">Subject Name</span>
+            </div>
+            <div class="detail-item">
+                <span class="label">Description:</span>
+                <span class="value" th:text="${subject.description}">Subject Description</span>
+            </div>
+        </div>
+        
+        <div class="detail-card">
+            <h2>Quick Actions</h2>
+            <div class="action-buttons">
+                <a th:href="@{/teacher/subjects/{id}/students(id=${subject.id})}" class="btn-primary">View Students</a>
+                <a th:href="@{/teacher/subjects/{id}/materials(id=${subject.id})}" class="btn-primary">Manage Materials</a>
+                <a th:href="@{/teacher/subjects/{id}/attendance(id=${subject.id})}" class="btn-primary">Mark Attendance</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="students-preview" th:if="${!students.isEmpty()}">
+        <h2>Enrolled Students</h2>
+        <p>Total Students: <span th:text="${students.size()}">0</span></p>
+        
+        <div class="students-list-preview">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="student : ${students}">
+                        <td th:text="${student.fullName}">Student Name</td>
+                        <td th:text="${student.username}">Username</td>
+                        <td th:text="${student.email}">Email</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="view-all">
+                <a th:href="@{/teacher/subjects/{id}/students(id=${subject.id})}" class="btn-secondary">View All Students</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="no-students" th:if="${students.isEmpty()}">
+        <div class="alert alert-info">
+            <p>No students are enrolled in this subject yet.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,18 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Teacher Dashboard - Learn Mate</title>
-    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <!-- Include common head elements -->
+    <th:block th:replace="admin/fragments :: common-head"></th:block>
 </head>
-<body>
-<div class="navbar">
-    <div class="logo"><h2>Teacher Dashboard</h2></div>
-    <form th:action="@{/logout}" method="post" style="margin: 0;"><button type="submit" class="btn-primary" style="width: auto; padding: 0.5rem 1rem;">Logout</button></form>
+<body class="bg-light">
+<!-- Include the universal navbar -->
+<div th:replace="admin/fragments :: navbar"></div>
+
+<div class="container fade-in">
+    <div class="dashboard-header">
+        <h1>Teacher Dashboard</h1>
+        <p>Welcome, <span th:text="${teacher.fullName}" class="text-primary">Teacher Name</span>!</p>
+    </div>
+    
+    <div class="dashboard-stats">
+        <div class="stat-card slide-in-up">
+            <h3>My Subjects</h3>
+            <p class="stat-number" th:text="${subjects.size()}">0</p>
+            <p class="stat-label">Total Subjects</p>
+        </div>
+        
+        <div class="stat-card slide-in-up" style="border-top-color: var(--accent-color);">
+            <h3>Students</h3>
+            <p class="stat-number">--</p>
+            <p class="stat-label">Total Students</p>
+        </div>
+        
+        <div class="stat-card slide-in-up" style="border-top-color: var(--success-color);">
+            <h3>Materials</h3>
+            <p class="stat-number">--</p>
+            <p class="stat-label">Course Materials</p>
+        </div>
+        
+        <div class="stat-card slide-in-up" style="border-top-color: var(--warning-color);">
+            <h3>Attendance</h3>
+            <p class="stat-number">--</p>
+            <p class="stat-label">Average Rate</p>
+        </div>
+    </div>
+    
+    <div class="dashboard-actions">
+        <a th:href="@{/teacher/subjects}" class="btn btn-primary">
+            <i class="fas fa-book"></i> View All Subjects
+        </a>
+    </div>
+    
+    <div class="recent-subjects" th:if="${!subjects.isEmpty()}">
+        <h2 class="mb-3">My Subjects</h2>
+        <div class="subjects-grid">
+            <div class="subject-card" th:each="subject : ${subjects}">
+                <h3 th:text="${subject.name}">Subject Name</h3>
+                <p th:text="${subject.description}">Subject Description</p>
+                <div class="subject-actions">
+                    <a th:href="@{/teacher/subjects/{id}(id=${subject.id})}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-info-circle"></i> Details
+                    </a>
+                    <a th:href="@{/teacher/subjects/{id}/students(id=${subject.id})}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-user-graduate"></i> Students
+                    </a>
+                    <a th:href="@{/teacher/subjects/{id}/materials(id=${subject.id})}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-file-alt"></i> Materials
+                    </a>
+                    <a th:href="@{/teacher/subjects/{id}/attendance(id=${subject.id})}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-clipboard-check"></i> Attendance
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="no-subjects" th:if="${subjects.isEmpty()}">
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle"></i> You don't have any subjects assigned yet. Please contact the administrator.
+        </div>
+    </div>
 </div>
-<div class="container">
-    <h2>Welcome, Teacher!</h2>
-    <p>Your dashboard is under construction.</p>
-</div>
+
+<!-- Include navbar script -->
+<th:block th:replace="admin/fragments :: navbar-script"></th:block>
 </body>
 </html>

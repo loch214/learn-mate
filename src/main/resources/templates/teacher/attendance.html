@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Mark Attendance - Learn Mate</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<!-- Include the universal navbar -->
+<div th:replace="admin/fragments :: navbar"></div>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Mark Attendance for <span th:text="${subject.name}">Subject Name</span></h1>
+        <div class="header-actions">
+            <a th:href="@{/teacher/subjects/{id}(id=${subject.id})}" class="btn-secondary">Back to Subject</a>
+            <a th:href="@{/teacher/subjects/{id}/students(id=${subject.id})}" class="btn-secondary">View Students</a>
+        </div>
+    </div>
+    
+    <div class="attendance-form-container" th:if="${!enrollments.isEmpty()}">
+        <div class="date-selector">
+            <form id="dateForm" method="get" th:action="@{/teacher/subjects/{id}/attendance(id=${subject.id})}">
+                <div class="form-group">
+                    <label for="attendanceDate">Select Date:</label>
+                    <input type="date" id="attendanceDate" name="date" th:value="${today}" onchange="this.form.submit()">
+                </div>
+            </form>
+        </div>
+        
+        <div class="attendance-form">
+            <h2>Attendance for <span th:text="${#temporals.format(today, 'MMMM dd, yyyy')}">July 28, 2025</span></h2>
+            
+            <div class="alert alert-success" th:if="${success != null}">
+                <p th:text="${success}">Success message</p>
+            </div>
+            
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Present</th>
+                        <th>Remarks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="enrollment : ${enrollments}">
+                        <form th:action="@{/teacher/subjects/{subjectId}/attendance(subjectId=${subject.id})}" method="post">
+                            <input type="hidden" name="enrollmentId" th:value="${enrollment.id}">
+                            <input type="hidden" name="date" th:value="${today}">
+                            
+                            <td th:text="${enrollment.student.fullName}">Student Name</td>
+                            <td>
+                                <div class="attendance-toggle">
+                                    <input type="radio" th:id="'present-' + ${enrollment.id}" name="present" value="true" checked>
+                                    <label th:for="'present-' + ${enrollment.id}">Present</label>
+                                    
+                                    <input type="radio" th:id="'absent-' + ${enrollment.id}" name="present" value="false">
+                                    <label th:for="'absent-' + ${enrollment.id}">Absent</label>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="text" name="remarks" placeholder="Optional remarks">
+                            </td>
+                            <td>
+                                <button type="submit" class="btn-primary">Save</button>
+                            </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <div class="no-enrollments" th:if="${enrollments.isEmpty()}">
+        <div class="alert alert-info">
+            <p>No students are enrolled in this subject yet.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Pre-fill attendance data if available
+    document.addEventListener('DOMContentLoaded', function() {
+        // This would be implemented with actual attendance data
+        // For now, it's just a placeholder
+    });
+</script>
+</body>
+</html>
