@@ -16,7 +16,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6 fade-in">
                     <h1 class="hero-title">Welcome to <span class="text-primary">Learn Mate</span></h1>
-                    <p class="hero-subtitle">The modern solution for educational institutes to manage classes, students, and resources efficiently.</p>
+                    <p class="hero-subtitle">Empowering students to achieve academic excellence and personal growth in a vibrant, supportive community.</p>
                     
                     <!-- Success Message -->
                     <div th:if="${successMessage}" class="alert alert-success mb-4 slide-in-up" th:text="${successMessage}"></div>
@@ -42,46 +42,32 @@
     <!-- Features Section -->
     <section class="features-section">
         <div class="container">
-            <h2 class="section-title text-center mb-5">Why Choose Learn Mate?</h2>
-            
-            <div class="row">
+            <div class="row features-grid">
                 <div class="col-md-4 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-chalkboard-teacher"></i>
                         </div>
-                        <h3>Teacher Management</h3>
-                        <p>Easily manage teacher profiles, subject assignments, and performance tracking.</p>
+                        <h3>Expert Faculty</h3>
+                        <p>Learn from highly qualified and passionate educators dedicated to your success.</p>
                     </div>
                 </div>
-                
                 <div class="col-md-4 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-user-graduate"></i>
+                            <i class="fas fa-users"></i>
                         </div>
-                        <h3>Student Management</h3>
-                        <p>Track student enrollment, attendance, and academic progress in one place.</p>
+                        <h3>Vibrant Student Community</h3>
+                        <p>Be part of a diverse, inclusive, and active student body with clubs, events, and support.</p>
                     </div>
                 </div>
-                
                 <div class="col-md-4 mb-4">
                     <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-book"></i>
+                            <i class="fas fa-book-open"></i>
                         </div>
-                        <h3>Course Management</h3>
-                        <p>Create and manage courses, materials, and resources with ease.</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-4 mb-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-clipboard-check"></i>
-                        </div>
-                        <h3>Attendance Tracking</h3>
-                        <p>Automated attendance tracking and reporting for better management.</p>
+                        <h3>Diverse Programs</h3>
+                        <p>Choose from a wide range of academic programs designed to prepare you for the future.</p>
                     </div>
                 </div>
                 
@@ -94,16 +80,6 @@
                         <p>Centralized repository for all educational materials and resources.</p>
                     </div>
                 </div>
-                
-                <div class="col-md-4 mb-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3>Performance Analytics</h3>
-                        <p>Insightful analytics and reports to track institutional performance.</p>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
@@ -111,11 +87,11 @@
     <!-- Call to Action Section -->
     <section class="cta-section">
         <div class="container text-center">
-            <h2 class="cta-title">Ready to transform your educational institute?</h2>
-            <p class="cta-subtitle">Join thousands of educational institutes already using Learn Mate.</p>
+            <h2 class="cta-title">Ready to start your journey with us?</h2>
+            <p class="cta-subtitle">Apply now and become part of our thriving academic community.</p>
             <div class="cta-actions">
                 <a th:href="@{/signup}" class="btn btn-lg btn-primary">
-                    <i class="fas fa-rocket"></i> Get Started Today
+                    <i class="fas fa-rocket"></i> Apply Now
                 </a>
             </div>
         </div>
@@ -126,11 +102,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h3 class="footer-title">Learn Mate</h3>
-                    <p>The modern solution for educational institutes.</p>
+                    <h3 class="footer-title">Learn Mate Institute</h3>
+                    <p>Committed to excellence in education, innovation, and student success.</p>
                 </div>
                 <div class="col-md-6 text-md-right">
-                    <p>&copy; 2025 Learn Mate. All rights reserved.</p>
+                    <p>&copy; 2025 Learn Mate Institute. All rights reserved.</p>
                 </div>
             </div>
         </div>
@@ -180,6 +156,16 @@
         .features-section {
             padding: var(--space-xxl) 0;
             background-color: var(--gray-50);
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--space-xl);
+        }
+        @media (min-width: 992px) {
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
         
         .section-title {

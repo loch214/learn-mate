@@ -43,6 +43,7 @@ public class TeacherController {
         
         model.addAttribute("teacher", teacher);
         model.addAttribute("subjects", subjects);
+        model.addAttribute("currentPage", "dashboard");
         
         return "teacher/dashboard";
     }
@@ -54,6 +55,7 @@ public class TeacherController {
         List<Subject> subjects = teacherService.getSubjectsByTeacher(teacher);
         
         model.addAttribute("subjects", subjects);
+        model.addAttribute("currentPage", "subjects");
         
         return "teacher/subjects";
     }
